@@ -33,12 +33,12 @@ This lab simulates a small company network and implements an end-to-end visibili
 
 > Notes:
 > - `SEC-SRV` is the SIEM “core”.
-> - `APP-SRV` is your main test target (SSH service).
+> - `APP-SRV` is the main test target (SSH service).
 > - Clients can be DHCP as long as they can reach `SEC-SRV` and OPNsense.
 
 ---
 
-## 3) Logging & telemetry flows (the important part)
+## 3) Logging & telemetry flows
 
 ### A) Endpoint telemetry → Wazuh
 - **Windows agent → SEC-SRV**
@@ -69,24 +69,23 @@ On `SEC-SRV`:
 
 Suricata runs on **OPNsense** and inspects traffic on the LAN side.
 
-- Ruleset: **ET Open** (or equivalent)
 - Output events appear in Wazuh as syslog entries (often tagged as `suricata`)
 - Goal: visibility of recon/scans and suspicious activity produced by Kali simulations
 
 ---
 
-## 5) What “proof” looks like in the SIEM
+## 5) What shows up in the SIEM
 
 ### Archives (raw events)
 - Index: `wazuh-archives-*`
-- You should see:
+- Contains:
   - OPNsense logs (`filterlog`, `opnsense`, `suricata`)
   - Linux auth logs (`sshd`, “Failed password”)
 
 ### Alerts (rule-triggered)
 - Index: `wazuh-alerts-*`
-- You should see:
-  - at least one working custom rule (example: your `rule.id 100200` / `100202`)
+- Contains:
+  - events matched by the custom rules `100200`–`100202` ([`rules/local_rules.xml`](../rules/local_rules.xml))
 
 ---
 
